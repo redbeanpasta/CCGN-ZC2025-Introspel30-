@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Number Unlock Puzzle</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #ece9e6, #ffffff);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      max-width: 450px;
+      width: 100%;
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    select, input[type="text"], button {
+      padding: 10px;
+      font-size: 16px;
+      width: 100%;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    input.correct {
+      background-color: #d4edda;
+      border-color: #28a745;
+    }
+
+    /* 🔥 Mystery box animation style */
+    #location {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      border: 2px dashed #28a745;
+      background-color: #e9fbe7;
+      color: #155724;
+      font-weight: bold;
+      border-radius: 10px;
+      opacity: 0;
+      transform: scale(0.7);
+      transition: all 1s ease;
+    }
+
+    /* 🔓 Visible + animated version */
+    #location.show {
+      display: block;
+      opacity: 1;
+      transform: scale(1);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Choose a number and unlock the location</h2>
+
+  <select id="numberSelect">
+    <option value="">-- Select a number --</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+  </select>
+
+  <input type="text" id="input1" placeholder="Eerste woord/cijfer" />
+  <input type="text" id="input2" placeholder="Tweede woord/cijfer" />
+  <input type="text" id="input3" placeholder="Derde woord/cijfer" />
+  <input type="text" id="input4" placeholder="Vierde woord/cijfer" />
+
+
+  <button onclick="checkAnswers()">Submit</button>
+
+  <div id="location"></div>
+</div>
+
+<!-- 🎉 Confetti library -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+<script>
+  const answersByNumber = {
+    "1": {
+      answers: ["175", "7", "8", "4"],
+      location: "📍 Haal de puzzelstukjes op bij Michel Pan. Het geheime woord is beker."
+    },
+    "2": {
+      answers: ["2120", "7","3", "5"],
+      location: "📍 Haal de puzzelstukjes op bij Christina Zheng. Het geheime woord is zeep."
+    },
+    "3": {
+      answers: ["VERENIGEN", "7", "8", "8"],
+      location: "📍 Haal de puzzelstukjes op bij Enyu Zhou. Het geheime woord is zout."
+    },
+    "4": {
+      answers: ["90", "6","4", "1"],
+      location: "📍 Haal de puzzelstukjes op bij Edward Ho. Het geheime woord is papier."
+    },
+    "5": {
+      answers: ["VERBOND", "3","2", "0"],
+      location: "📍 Haal de puzzelstukjes op bij de Verlichting zaal. Het geheime woord is wolk."
+    },
+    "6": {
+      answers: ["10586", "5","1", "6"],
+      location: "📍 Haal de puzzelstukjes op bij de bar. Het geheime woord is muis."
+    }
+  };
+
+  function checkAnswers() {
+    const selectedNumber = document.getElementById("numberSelect").value;
+    const locationDiv = document.getElementById("location");
+
+    if (!selectedNumber || !answersByNumber[selectedNumber]) {
+      alert("Please select a valid number first.");
+      return;
+    }
+
+    const expectedAnswers = answersByNumber[selectedNumber].answers;
+    const inputs = [
+      document.getElementById("input1"),
+      document.getElementById("input2"),
+      document.getElementById("input3"),
+      document.getElementById("input4")
+    ];
+
+    let allCorrect = true;
+
+    inputs.forEach((input, index) => {
+      if (input.value.trim().toLowerCase() === expectedAnswers[index].toLowerCase()) {
+        input.classList.add("correct");
+      } else {
+        input.classList.remove("correct");
+        allCorrect = false;
+      }
+    });
+
+    if (allCorrect) {
+      locationDiv.textContent = answersByNumber[selectedNumber].location;
+      locationDiv.classList.add("show");
+
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+
+    } else {
+      locationDiv.classList.remove("show");
+    }
+  }
+</script>
+
+</body>
+</html>
