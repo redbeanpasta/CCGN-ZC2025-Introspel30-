@@ -37,7 +37,6 @@
       background-color: #d4edda;
       border-color: #28a745;
     }
-
     #location {
       display: none;
       margin-top: 20px;
@@ -51,7 +50,6 @@
       transform: scale(0.7);
       transition: all 1s ease;
     }
-
     #location.show {
       display: block;
       opacity: 1;
@@ -89,30 +87,38 @@
 <script>
   const answersByNumber = {
     "1": {
-      answers: ["MTc1", "Nw==", "OTc1NA==", "NA=="],
-      location: "📍 Haal de puzzelstukjes op bij Michel Pan. Het geheime woord is beker."
+      answers: ["MTc1", "Nw==", "OTc1NA==", "NA=="], 
+      location: "8J+SqyBIYWFsIGRlIHB1enplbHN0dWtqZXMgb3AgYmlqIE1pY2hlbCBQYW4uIEhldCBnZWhlaW1lIHdvb3JkIGlzIGJla2VyLg=="
     },
     "2": {
-      answers: ["MjEyMA==", "Nw==", "MzU1Njkx", "NQ=="],
-      location: "📍 Haal de puzzelstukjes op bij Christina Zheng. Het geheime woord is zeep."
+      answers: ["MjEyMA==", "Nw==", "MzU1Njkx", "NQ=="],  
+      location: "8J+SqyBIYWFsIGRlIHB1enplbHN0dWtqZXMgb3AgYmlqIENocmlzdGluYSBaaGVuZy4gSGV0IGdlaGVpbWUgd29vcmQgaXMgemVlcC4="
     },
     "3": {
-      answers: ["VkVSRU5JR0VO", "Nw==", "MTMxMTIyMjE=", "OA=="],
-      location: "📍 Haal de puzzelstukjes op bij Enyu Zhou. Het geheime woord is zout."
+      answers: ["VkVSRU5JR0VO", "Nw==", "MTMxMTIyMjE=", "OA=="],  
+      location: "8J+SqyBIYWFsIGRlIHB1enplbHN0dWtqZXMgb3AgYmlqIEVueXUgWmhvdS4gSGV0IGdlaGVpbWUgd29vcmQgaXMgenVvdC4="
     },
     "4": {
-      answers: ["OTA=", "Ng==", "MTgx", "NQ=="],
-      location: "📍 Haal de puzzelstukjes op bij Edward Ho. Het geheime woord is papier."
+      answers: ["OTA=", "Ng==", "MTgx", "NQ=="],  
+      location: "8J+SqyBIYWFsIGRlIHB1enplbHN0dWtqZXMgb3AgYmlqIEVkd2FyZCBHby4gSGV0IGdlaGVpbWUgd29vcmQgaXMgcGFwaWVyLg=="
     },
     "5": {
-      answers: ["VkVSQk9ORA==", "Mw==", "MzY5OA==", "MA=="],
-      location: "📍 Haal de puzzelstukjes op bij Mo Laghzaoui. Het geheime woord is wolk."
+      answers: ["VkVSQk9ORA==", "Mw==", "MzY5OA==", "MA=="],  
+      location: "8J+SqyBIYWFsIGRlIHB1enplbHN0dWtqZXMgb3AgYmlqIE1vIExhZ2h6YW91aS4gSGV0IGdlaGVpbWUgd29vcmQgaXMgd29say4="
     },
     "6": {
-      answers: ["MTA1ODY=", "NQ==", "V0VMS09NIEFMTEVNQUFMIElKIERFWkUgWk9NRVJDT05GRVJFTlRJRSE=", "Ng=="],
-      location: "📍 Haal de puzzelstukjes op bij Marvin Pranoto. Het geheime woord is muis."
+      answers: ["MTA1ODY=", "NQ==", "V0VMS09NIEFMTElFTUFMIElKIERFWkUgWk9NRVJDT05GRVJFTlRJRS!", "Ng=="],  
+      location: "8J+SqyBIYWFsIGRlIHB1enplbHN0dWtqZXMgb3AgYmlqIE1hcnZpbiBQcmFub3RvLiBIZXQgZ2VoZWltZSB3b29yZCBpcyBtdWlzLg=="
     }
   };
+
+  function decodeBase64(str) {
+    try {
+      return atob(str);
+    } catch (e) {
+      return "⚠️ Fout bij decoderen";
+    }
+  }
 
   function checkAnswers() {
     const selectedNumber = document.getElementById("numberSelect").value;
@@ -123,7 +129,7 @@
       return;
     }
 
-    const expectedAnswers = answersByNumber[selectedNumber].answers.map(a => atob(a));
+    const expectedAnswers = answersByNumber[selectedNumber].answers;
     const inputs = [
       document.getElementById("input1"),
       document.getElementById("input2"),
@@ -134,7 +140,9 @@
     let allCorrect = true;
 
     inputs.forEach((input, index) => {
-      if (input.value.trim().toLowerCase() === expectedAnswers[index].toLowerCase()) {
+      const expectedDecoded = decodeBase64(expectedAnswers[index]).toLowerCase().trim();
+      const userInput = input.value.trim().toLowerCase();
+      if (userInput === expectedDecoded) {
         input.classList.add("correct");
       } else {
         input.classList.remove("correct");
@@ -143,7 +151,7 @@
     });
 
     if (allCorrect) {
-      locationDiv.textContent = answersByNumber[selectedNumber].location;
+      locationDiv.textContent = decodeBase64(answersByNumber[selectedNumber].location);
       locationDiv.classList.add("show");
 
       confetti({
