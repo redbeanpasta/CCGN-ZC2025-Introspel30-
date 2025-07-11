@@ -38,7 +38,6 @@
       border-color: #28a745;
     }
 
-    /* 🔥 Mystery box animation style */
     #location {
       display: none;
       margin-top: 20px;
@@ -53,7 +52,6 @@
       transition: all 1s ease;
     }
 
-    /* 🔓 Visible + animated version */
     #location.show {
       display: block;
       opacity: 1;
@@ -81,39 +79,37 @@
   <input type="text" id="input3" placeholder="Derde woord/cijfer" />
   <input type="text" id="input4" placeholder="Vierde woord/cijfer" />
 
-
   <button onclick="checkAnswers()">Submit</button>
 
   <div id="location"></div>
 </div>
 
-<!-- 🎉 Confetti library -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
 <script>
   const answersByNumber = {
     "1": {
-      answers: ["175", "7", "9754", "4"],
+      answers: ["MTc1", "Nw==", "OTc1NA==", "NA=="],
       location: "📍 Haal de puzzelstukjes op bij Michel Pan. Het geheime woord is beker."
     },
     "2": {
-      answers: ["2120", "7","355691", "5"],
+      answers: ["MjEyMA==", "Nw==", "MzU1Njkx", "NQ=="],
       location: "📍 Haal de puzzelstukjes op bij Christina Zheng. Het geheime woord is zeep."
     },
     "3": {
-      answers: ["VERENIGEN", "7", "13112221", "8"],
+      answers: ["VkVSRU5JR0VO", "Nw==", "MTMxMTIyMjE=", "OA=="],
       location: "📍 Haal de puzzelstukjes op bij Enyu Zhou. Het geheime woord is zout."
     },
     "4": {
-      answers: ["90", "6","181", "5"],
+      answers: ["OTA=", "Ng==", "MTgx", "NQ=="],
       location: "📍 Haal de puzzelstukjes op bij Edward Ho. Het geheime woord is papier."
     },
     "5": {
-      answers: ["VERBOND", "3","3698", "0"],
+      answers: ["VkVSQk9ORA==", "Mw==", "MzY5OA==", "MA=="],
       location: "📍 Haal de puzzelstukjes op bij Mo Laghzaoui. Het geheime woord is wolk."
     },
     "6": {
-      answers: ["10586", "5","WELKOM ALLEMAAL BIJ DEZE ZOMERCONFERENTIE!", "6"],
+      answers: ["MTA1ODY=", "NQ==", "V0VMS09NIEFMTEVNQUFMIElKIERFWkUgWk9NRVJDT05GRVJFTlRJRSE=", "Ng=="],
       location: "📍 Haal de puzzelstukjes op bij Marvin Pranoto. Het geheime woord is muis."
     }
   };
@@ -127,7 +123,7 @@
       return;
     }
 
-    const expectedAnswers = answersByNumber[selectedNumber].answers;
+    const expectedAnswers = answersByNumber[selectedNumber].answers.map(a => atob(a));
     const inputs = [
       document.getElementById("input1"),
       document.getElementById("input2"),
@@ -155,7 +151,6 @@
         spread: 70,
         origin: { y: 0.6 }
       });
-
     } else {
       locationDiv.classList.remove("show");
     }
